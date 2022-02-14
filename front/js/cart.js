@@ -9,7 +9,7 @@ async function cart() {
     .then(function (itemsApi) {
       const itemsId = itemsApi.map((el) => el._id);
 
-      for (let items of recoveryCart) {
+      for (let items of recoveryCart){
         let id = items["idChoice"];
         let indexId = itemsId.indexOf(id); /* Pour trouver l'occurence */
         let itemsPrice = itemsApi[indexId].price;
@@ -183,82 +183,109 @@ function itemsTotalPrice() {
 
 /* cCréation du formulaire */
 function form() {
-  let usersDataForm = document.querySelector(".cart__order__form");
 
   /* Avec RegExp */
-  let lettersRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+  let lettersRegExp = new RegExp("^[a-zA-ZÀ-ÿ_-]{2,60}$");
   let addressRegExp = new RegExp("[^A-Za-z0-9]");
   let emailRegExp = new RegExp("^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$");
 
   /* Prénom */
-  const displayfirstName = function (surname) {
-    let errorFirstName = surname.nextElementSibling;
-    if (lettersRegExp.test(surname.value)) {
+  const inputFirstName = document.getElementById("firstName");
+  const errorFirstName = document.getElementById("firstNameErrorMsg");
+  const displayFirstName = function (surname) {
+    let isValid = false;
+    let testSurname = lettersRegExp.test(surname);
+    if (testSurname) {
       errorFirstName.innerText = "";
+      isValid = true;
     } else {
       errorFirstName.innerText = "Veuillez renseigner votre prénom";
+      isValid = false;
     }
+    return(isValid)
   };
 
-  usersDataForm.firstName.addEventListener("change", function () {
-    displayfirstName(this);
+
+  inputFirstName.addEventListener("click", function (event) {
+    displayFirstName(event.target.value);
+    console.log(displayFirstName(event.target.value));
   });
 
   /* Nom */
+  const inputName = document.getElementById("lastName");
+  const errorName = document.getElementById("lastNameErrorMsg");
   const displayName = function (name) {
-    let errorName = name.nextElementSibling;
-    if (lettersRegExp.test(name.value)) {
+    let isValid = false;
+    let testName = lettersRegExp.test(name);
+    if (testName) {
       errorName.innerText = "";
+      isValid = true;
     } else {
       errorName.innerText = "Veuillez renseigner votre nom";
+      isValid = false;
     }
+    return(isValid)
   };
 
-  usersDataForm.lastName.addEventListener("change", function () {
-    displayName(this);
+  inputName.addEventListener("input", function (event) {
+    displayName(event.target.value);
   });
 
   /* Adresse */
+  const inputAddress = document.getElementById("address");
+  const errorAddress = document.getElementById("addressErrorMsg");
   const displayAdress = function (adress) {
-    let errorAdress = adress.nextElementSibling;
-    if (addressRegExp.test(adress.value)) {
-      errorAdress.innerText = "";
+    let isValid = false;
+    let testAddress = addressRegExp.test(adress);
+    if (testAddress) {
+      errorAddress.innerText = "";
+      isValid = true;
     } else {
-      errorAdress.innerText = "Veuillez renseigner votre adresse";
+      errorAddress.innerText = "Veuillez renseigner votre adresse";
+      isValid = false; 
     }
   };
 
-  usersDataForm.address.addEventListener("change", function () {
-    displayAdress(this);
+  inputAddress.addEventListener("input", function (event) {
+    displayAdress(event.target.value);
   });
 
   /* Ville */
-  const displayCity = function (town) {
-    errorCity = town.nextElementSibling;
-
-    if (lettersRegExp.test(town.value)) {
+  const inputCity = document.getElementById("city");
+  const errorCity = document.getElementById("cityErrorMsg");
+  const displayCity = function (city) {
+    let isValid= false;
+    let testCity = lettersRegExp.test(city);
+    if (testCity) {
       errorCity.innerText = "";
+      isValid = true;
     } else {
       errorCity.innerText = "Veuillez renseigner votre ville";
+      isValid = false;
     }
   };
 
-  usersDataForm.city.addEventListener("change", function () {
-    displayCity(this);
+  inputCity.addEventListener("input", function (event) {
+    displayCity(event.target.value);
   });
 
   /* Mail */
-  const displayEmail = function (mail) {
-    let errorEmail = mail.nextElementSibling;
-    if (emailRegExp.test(mail.value)) {
+  const inputEmail = document.getElementById("email");
+  const errorEmail = document.getElementById("emailErrorMsg");
+  const displayEmail = function (email) {
+    let isValid = false;
+    let testEmail = emailRegExp.test(email);
+    if (testEmail) {
       errorEmail.innerText = "";
+      isValid = true; 
     } else {
       errorEmail.innerText = "Veuillez renseigner votre email.";
+      isValid = false; 
     }
   };
 
-  usersDataForm.email.addEventListener("change", function () {
-    displayEmail(this);
+  inputEmail.addEventListener("input", function (event) {
+    displayEmail(event.target.value);
   });
 }
 form();
@@ -273,12 +300,12 @@ function sendForm() {
     let surname = document.getElementById("firstName");
     let name = document.getElementById("lastName");
     let adress = document.getElementById("address");
-    let town = document.getElementById("city");
+    let city = document.getElementById("city");
     let mail = document.getElementById("email");
 
-    let idProducts = [];
+    let products = [];
     for (let i = 0; i < recoveryCart.length; i++) {
-      idProducts.push(recoveryCart[i].id);
+      products.push(recoveryCart[i].idChoice);
     }
 
     const order = {
@@ -286,10 +313,10 @@ function sendForm() {
         firstName: surname.value,
         lastName: name.value,
         address: adress.value,
-        city: town.value,
+        city: city.value,
         email: mail.value,
       },
-      products: idProducts,
+      products
     };
 
     const send = {
@@ -303,11 +330,13 @@ function sendForm() {
 
     fetch("http://localhost:3000/api/products/order", send)
       .then((response) => response.json())
-      .then(function (idReturn) {
+      .then( (data) => {
         localStorage.clear();
-        localStorage.setItem("orderId", idReturn.orderId);
-        document.location.href = "confirmation.html";
+        localStorage.setItem("orderId", data.orderId);
+        console.log(order);
+        document.location.href = `confirmation.html`;
       })
+      console.log(products);
   });
 }
 sendForm();
