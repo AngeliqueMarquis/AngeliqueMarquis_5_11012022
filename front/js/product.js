@@ -31,6 +31,7 @@ urlProduct
       itemsColorsChoice.innerText = itemsData.colors[i]; 
       itemsColors.appendChild(itemsColorsChoice); 
     }
+    
 
 /*****  Ajouts des produits au panier *****/
 
@@ -89,4 +90,10 @@ urlProduct
                               }
                             }
                           });
-                        });
+                        })
+                        .catch(function(error) {
+                          return error;
+                      });
+
+      
+        

@@ -333,6 +333,9 @@ function sendForm() {
         localStorage.setItem("orderId", data.orderId);
         document.location.href = `confirmation.html`;
       })
+      .catch(function(error) {
+        return error;
+    });
   });
 }
 sendForm();
