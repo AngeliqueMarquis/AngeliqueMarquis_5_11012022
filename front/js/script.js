@@ -1,6 +1,6 @@
 /* Récupération des articles de l'API */
 
-const Url = fetch ("http://localhost:3000/api/products");
+const Url = fetch ('http://localhost:3000/api/products');
 
 Url
     .then((response) => response.json())
@@ -8,9 +8,7 @@ Url
         const itemsInformation = document.createElement("section");
         itemsInformation .classList.add("items");
         itemsInformation .id = "items";
-        const selectDivLimitedWidthBlock = document.querySelector(
-        "main .limitedWidthBlock"
-        );
+        const selectDivLimitedWidthBlock = document.querySelector("main .limitedWidthBlock");
         selectDivLimitedWidthBlock.appendChild(itemsInformation);
 
         for (eachItems of itemsData) { /* Chaque article du tableau */
@@ -23,10 +21,10 @@ Url
         const itemsArticle = document.createElement("article");
         itemsLink.appendChild(itemsArticle);
 
-        const itemsImage = document.createElement("img");
-        itemsImage.src = eachItems.imageUrl;
-        itemsImage.alt = eachItems.altTxt;
-        itemsArticle.appendChild(itemsImage);
+        const itemsPicture = document.createElement("img");
+        itemsPicture.src = eachItems.imageUrl;
+        itemsPicture.alt = eachItems.altTxt;
+        itemsArticle.appendChild(itemsPicture);
 
         const itemsTitle = document.createElement("h3");
         itemsTitle.classList.add("productName");
@@ -38,4 +36,8 @@ Url
         itemsArticle.appendChild(itemsDescription);
         itemsDescription.innerText = eachItems.description;
         }
+    })
+
+    .catch(function(error) {
+        return error;
     });

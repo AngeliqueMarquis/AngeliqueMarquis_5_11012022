@@ -1,6 +1,5 @@
 /* Récupération du LocalStorage */
 let recoveryCart = JSON.parse(localStorage.getItem("itemsProduct"));
-console.log(recoveryCart);
 
 /* Récupération des autres informations des articles et création des balises */
 async function cart() {
@@ -25,67 +24,67 @@ async function cart() {
         const itemsCartArticle = document.createElement("article");
         const itemsCart = document.getElementById("cart__items")
         itemsCart.appendChild(itemsCartArticle);
-        itemsCart.classList.add("cart__item");
+        itemsCartArticle.classList.add("cart__item");
         itemsCart.setAttribute("data-id", id);
         itemsCart.setAttribute("data-color", itemsColors);
 
         /* Création de l'image */
         const itemsCartPicture = document.createElement("div");
-        const itemsPicture = itemsCart.appendChild(itemsCartPicture);
-        itemsPicture.classList.add("cart__item__img");
+        itemsCartArticle.appendChild(itemsCartPicture);
+        itemsCartPicture.classList.add("cart__item__img");
 
         const picture = document.createElement("img");
-        const pictureAttribut = itemsPicture.appendChild(picture);
-        pictureAttribut.src = itemsUrl;
-        pictureAttribut.alt = itemsTxtAlt;
+        itemsCartPicture.appendChild(picture);
+        picture.src = itemsUrl;
+        picture.alt = itemsTxtAlt;
 
         /* Création des détails de l'article */
         const itemsCartContentDiv = document.createElement("div");
-        const itemsCartContent = itemsCart.appendChild(itemsCartContentDiv);
-        itemsCartContent.classList.add("cart__item__content");
+        itemsCartArticle.appendChild(itemsCartContentDiv);
+        itemsCartContentDiv.classList.add("cart__item__content");
 
         /* Création de la description de l'article */
         const itemsCartContentDescriptionDiv = document.createElement("div");
-        const itemsCartContentDescription = itemsPicture.nextElementSibling.appendChild(itemsCartContentDescriptionDiv);
-        itemsCartContentDescription.classList.add("cart__item__content__description");
+        itemsCartContentDiv.appendChild(itemsCartContentDescriptionDiv);
+        itemsCartContentDescriptionDiv.classList.add("cart__item__content__description");
 
         const itemsCartContentDescriptionName = document.createElement("h2");
         const itemsCartContentDescriptionColor = document.createElement("p");
         const itemsCartContentDescriptionPrice = document.createElement("p");
-        itemsCartContentDescription.appendChild(itemsCartContentDescriptionName).innerText = itemsName;
-        itemsCartContentDescription.appendChild(itemsCartContentDescriptionColor).innerText = itemsColors;
-        itemsCartContentDescription.appendChild(itemsCartContentDescriptionPrice).innerText = itemsPrice + " €";
+        itemsCartContentDescriptionDiv.appendChild(itemsCartContentDescriptionName).innerText = itemsName;
+        itemsCartContentDescriptionDiv.appendChild(itemsCartContentDescriptionColor).innerText = itemsColors;
+        itemsCartContentDescriptionDiv.appendChild(itemsCartContentDescriptionPrice).innerText = itemsPrice + " €";
 
         /* Création de la div permettant la modification */
         const itemsCartContentSettingsDiv = document.createElement("div");
-        const itemsCartContentSettings = itemsCartContent.appendChild(itemsCartContentSettingsDiv);
-        itemsCartContentSettings.classList.add("cart__item__content__settings");
+        itemsCartContentDiv.appendChild(itemsCartContentSettingsDiv);
+        itemsCartContentSettingsDiv.classList.add("cart__item__content__settings");
 
         /* Création de la div permettant la modification des quantités */
         const itemsCartContentSettingsQuantityDiv = document.createElement("div");
-        const itemsCartContentSettingsQuantity = itemsCartContentSettings.appendChild(itemsCartContentSettingsQuantityDiv);
-        itemsCartContentSettingsQuantity.classList.add("cart__item__content__settings__quantity");
+        itemsCartContentSettingsDiv.appendChild(itemsCartContentSettingsQuantityDiv);
+        itemsCartContentSettingsQuantityDiv.classList.add("cart__item__content__settings__quantity");
 
-        const itemsCartContentSettingsQuantityQtyDiv = document.createElement("div");
-        const itemsCartContentSettingsQuantityQtyInput = document.createElement("input");
-        itemsCartContentSettingsQuantity.appendChild(itemsCartContentSettingsQuantityQtyDiv).innerText = "Qté : ";
-        const itemsChangeQuantity = itemsCartContentSettingsQuantity.appendChild(itemsCartContentSettingsQuantityQtyInput);
-        itemsChangeQuantity.setAttribute("input", "number");
-        itemsChangeQuantity.setAttribute("name", "itemQuantity");
-        itemsChangeQuantity.setAttribute("min", 1);
-        itemsChangeQuantity.setAttribute("max", 100);
-        itemsChangeQuantity.setAttribute("value", itemsQuantity);
-        itemsChangeQuantity.classList.add("itemQuantity");
+        const itemsCartContentSettingsQuantityP = document.createElement("p");
+        const itemsCartContentSettingsQuantityInput = document.createElement("input");
+        itemsCartContentSettingsQuantityDiv.appendChild(itemsCartContentSettingsQuantityP).innerText = "Qté : ";
+        itemsCartContentSettingsQuantityDiv.appendChild(itemsCartContentSettingsQuantityInput);
+        itemsCartContentSettingsQuantityInput.setAttribute("input", "number");
+        itemsCartContentSettingsQuantityInput.setAttribute("name", "itemQuantity");
+        itemsCartContentSettingsQuantityInput.setAttribute("min", 1);
+        itemsCartContentSettingsQuantityInput.setAttribute("max", 100);
+        itemsCartContentSettingsQuantityInput.setAttribute("value", itemsQuantity);
+        itemsCartContentSettingsQuantityInput.classList.add("itemQuantity");
 
         /* Création de la div permettant la suppression */
         const itemsCartContentSettingsDeleteDiv = document.createElement("div");
-        const itemsCartContentSettingsDelete = itemsCartContentSettings.appendChild(itemsCartContentSettingsDeleteDiv);
-        itemsCartContentSettingsDelete.classList.add("cart__item__content__settings__delete");
+        itemsCartContentDiv.appendChild(itemsCartContentSettingsDeleteDiv);
+        itemsCartContentSettingsDeleteDiv.classList.add("cart__item__content__settings__delete");
 
         const deleteItemP = document.createElement("p");
-        const deleteItem = itemsCartContentSettingsDelete.appendChild(deleteItemP);
-        deleteItem.classList.add("deleteItem");
-        deleteItem.innerText = "supprimer";
+        itemsCartContentSettingsDeleteDiv.appendChild(deleteItemP);
+        deleteItemP.classList.add("deleteItem");
+        deleteItemP.innerText = "supprimer";
 
       }
       itemsDelete();
@@ -181,7 +180,7 @@ function itemsTotalPrice() {
 }
 
 
-/* cCréation du formulaire */
+/* Création du formulaire */
 function form() {
 
   /* Avec RegExp */
@@ -208,7 +207,6 @@ function form() {
 
   inputFirstName.addEventListener("click", function (event) {
     displayFirstName(event.target.value);
-    console.log(displayFirstName(event.target.value));
   });
 
   /* Nom */
@@ -333,10 +331,8 @@ function sendForm() {
       .then( (data) => {
         localStorage.clear();
         localStorage.setItem("orderId", data.orderId);
-        console.log(order);
         document.location.href = `confirmation.html`;
       })
-      console.log(products);
   });
 }
 sendForm();

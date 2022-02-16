@@ -42,9 +42,8 @@ urlProduct
         let itemsOptions = {
             idChoice: itemsData._id,
             colorsChoice: document.querySelector("#colors").value,
-            quantiteChoice: document.querySelector("#quantity").value,
+            quantiteChoice: parseInt(document.querySelector("#quantity").value),
             };
-            console.log(itemsOptions);
 
     // Alerte sur les manquants (couleurs + quantités) //    
         let itemsLocalStorage = [];
